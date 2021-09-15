@@ -11,16 +11,12 @@ class MainPage extends React.Component {
             phone:"",
             errors: {}
         }
-    }
-   
+    }   
 
     handleChange = (e) => {
-        // console.log('val', event.target.value + elementValue)
-        // let formElement = this.state.elementValue;
-        // formElement[elementValue] = event.target.value;        
-        // this.setState({formElement});
         const targetName = e.target.name;
-        let targetValue = e.target.value
+        let targetValue = e.target.value;
+
         if(targetName == "phone") {
             if(targetValue.length <=10) {
                 targetValue = e.target.value.replace(/\D/g, '');
@@ -29,8 +25,7 @@ class MainPage extends React.Component {
         }
         else {
             this.setState({[targetName]: targetValue });
-        }
-        
+        }        
     }
 
     formValidation = () => {
@@ -38,14 +33,15 @@ class MainPage extends React.Component {
         let isValid = true;
         const errors = {};
         // const emailReg = '/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/';
-        // const PasswordReg = /^[A-Z]*$/;
+         const PasswordReg = RegExp(/^(?=.*\d)(?=.*[!@#$%^&*])(?=.*[a-z])(?=.*[A-Z]).{8,}$/);
+        
 
         if(!username) {
             errors["username"] = "Username cannot be empty";
             isValid = false;
         } else if(username.trim().length < 6 || username.trim().length > 20) {
-            errors["username"] = "Username must be length between 6 and 20";
-            isValid = false;
+            errors["username"] = "Username must be min 6 and max 20 characters";
+            isValid = false;            
         }
 
         if(!email) {
@@ -61,10 +57,10 @@ class MainPage extends React.Component {
             errors["password"] = "Password cannot be empty";
             isValid = false;
         }
-        // else if(!new RegExp("^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,32}$").test(password)){
-        //     errors["password"] = "Please enter correct password";
-        //     isValid = false;
-        // }
+        else if(!PasswordReg.test(password)){
+            errors["password"] = "Please enter correct password";
+            isValid = false;
+        }
 
         if(!resetPassword) {
             errors["resetPassword"] = "Reset Password cannot be empty";
