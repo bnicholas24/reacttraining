@@ -7,7 +7,7 @@ class MainPage extends React.Component {
             username:"",
             email:"",
             password:"",
-            resetPassword:"",
+            confirmPassword:"",
             phone:"",
             errors: {}
         }
@@ -29,7 +29,7 @@ class MainPage extends React.Component {
     }
 
     formValidation = () => {
-        const { username, email, password, resetPassword, phone } = this.state;
+        const { username, email, password, confirmPassword, phone } = this.state;
         let isValid = true;
         const errors = {};
         // const emailReg = '/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/';
@@ -40,7 +40,7 @@ class MainPage extends React.Component {
             errors["username"] = "Username cannot be empty";
             isValid = false;
         } else if(username.trim().length < 6 || username.trim().length > 20) {
-            errors["username"] = "Username must be min 6 and max 20 characters";
+            errors["username"] = "Username must be min 6 and max 20";
             isValid = false;            
         }
 
@@ -58,16 +58,16 @@ class MainPage extends React.Component {
             isValid = false;
         }
         else if(!PasswordReg.test(password)){
-            errors["password"] = "Please enter correct password";
+            errors["password"] = "Password must contain 1 uppercase, 1 specialcharacter, 1 number and lowercase";
             isValid = false;
         }
 
-        if(!resetPassword) {
-            errors["resetPassword"] = "Reset Password cannot be empty";
+        if(!confirmPassword) {
+            errors["confirmPassword"] = "Confirm password cannot be empty";
             isValid = false;
         }
-        else if(resetPassword !== password){
-            errors["resetPassword"] = "Password must be same";
+        else if(confirmPassword !== password){
+            errors["confirmPassword"] = "Confirm password must be same";
             isValid = false;
         }
 
@@ -90,78 +90,77 @@ class MainPage extends React.Component {
         const isValid = this.formValidation();
 
         if(isValid) {
-            this.setState({username:"", email:"", password:"", resetPassword:"", phone:""});
+            this.setState({username:"", email:"", password:"", confirmPassword:"", phone:""});
             alert("Form has submitted successfully.");
         }
     }
 
     render() {
-        const {username, email, password, resetPassword, phone, errors} = this.state;
+        const {username, email, password, confirmPassword, phone, errors} = this.state;
         return (
             <div>
                 <h1>React Training</h1>
                 <p>Form</p>
                 <form onSubmit={this.handleSubmit} className='input-form'>
                 <div className="form-group">
-                    <p><input 
+                    <input 
                         type="text" 
                         placeholder="Name" 
                         value={username} 
                         name="username" 
                         onChange={this.handleChange} 
                         />
-                    </p>
                     { errors && (
-                            <p className="error">{errors["username"]}</p> 
+                            <span className="error">{errors["username"]}</span> 
                         )}
                 </div>
                 <div className="form-group">
-                    <p><input 
+                    <input 
                         type="text" 
                         placeholder="Email" 
                         name="email"
                         value={email}
                         onChange={this.handleChange} 
-                    /></p>
+                    />
                     { errors && (
-                            <p className="error">{errors["email"]}</p> 
+                            <span className="error">{errors["email"]}</span> 
                         )}
                 </div>
                 <div className="form-group">
-                    <p><input 
+                    <input 
                         type="password" 
                         placeholder="Password" 
                         name="password"
                         value={password}
                         onChange={this.handleChange}
-                    /></p>
+                    />
                     
                     { errors && (
-                            <p className="error">{errors["password"]}</p> 
+                            <span className="error">{errors["password"]}</span> 
                         )}
                 </div>
                 <div className="form-group">
-                    <p><input 
+                    <input 
                         type="password" 
                         placeholder="Reset Password" 
-                        name="resetPassword"
-                        value={resetPassword}
+                        name="confirmPassword"
+                        value={confirmPassword}
                         onChange={this.handleChange} 
-                    /></p>
+                    />
                     { errors && (
-                            <p className="error">{errors["resetPassword"]}</p> 
+                            <span className="error">{errors["confirmPassword"]}</span> 
                         )}
                 </div>
                 <div className="form-group">
-                    <p><input 
+                    <input 
                         type="text" 
                         placeholder="Phone number" 
                         name="phone"
                         value={phone}
                         onChange={this.handleChange} 
-                    /></p>
+                    />
                     { errors && (
-                            <p className="error">{errors["phone"]}</p> 
+                            <span className="error">{errors["phone"]}</span> 
                         )}
                 </div>
                 <p><button value="Submit">Submit</button></p>
