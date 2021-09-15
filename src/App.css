@@ -1,10 +1,14 @@
 .App {
   text-align: center;
+  box-sizing: border-box;
 }
 
 .App-logo {
   height: 40vmin;
   pointer-events: none;
+}
+* {
+  box-sizing: border-box;
 }
 
 @media (prefers-reduced-motion: no-preference) {
@@ -28,6 +32,53 @@
   color: #61dafb;
 }
 
+.input-form {
+  width: 268px;
+  margin: 0 auto;
+}
+.form-group {
+  position: relative;
+}
+.form-group .error{
+  margin-left: 5px;
+  font-size: 13px;
+  color: red;
+  position: absolute;
+  top: 17px;
+  left: 0;
+  text-align: left;
+}
+.input-form input {
+  padding: 7px;
+  margin-bottom: 6px;
+  border: 1px solid #aaa;
+  border-radius: 4px;
+  width: 100%;
+}
+.input-form input.focus {
+  outline: none;
+  box-shadow: none;
+}
+.input-form button {
+  background-color: #006fcf;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  color: #fff;
+  margin-top: 10px;
+  cursor: pointer;
+}
+.input-form input::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+  color: #bbb;
+}
+
+.input-form input:-ms-input-placeholder { /* Internet Explorer 10-11 */
+  color: #bbb;
+}
+
+.input-form input::-ms-input-placeholder { /* Microsoft Edge */
+  color: #bbb;
+}
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);
