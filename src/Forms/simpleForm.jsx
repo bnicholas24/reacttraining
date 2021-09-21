@@ -1,6 +1,6 @@
 import React from 'react';
 
-class MainPage extends React.Component {
+class SimpleForm extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -9,74 +9,92 @@ class MainPage extends React.Component {
             password:"",
             confirmPassword:"",
             phone:"",
-            errors: {}
+            errors: {
+                username:'',
+                email:'',
+                password:'',
+                confirmPassword:'',
+                phone:'' 
+            },
+            isValid: true
         }
+        this.handleChange = this.handleChange.bind(this);
+        this.handleSubmit = this.handleSubmit.bind(this);
     }   
+    // const formValid = errors => {
+    //     let valid = true;
+        
+    // }
+    handleChange(e) {
+        const { name, value } = e.target;
+        let errors = this.state.errors;
+        let isValid = this.state.isValid;
+        const emailReg = RegExp(/[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,15}/g)
+         const PasswordReg = RegExp(/^(?=.*\d)(?=.*[!@#$%^&*])(?=.*[a-z])(?=.*[A-Z]).{8,}$/);
+        switch(name) {
+            case 'username':
+                errors.username = (value.length < 6 && value.length > 0) || value.length > 20
+                ? "Username must be min 6 and max 20" : "";
 
-    handleChange = (e) => {
-        const targetName = e.target.name;
-        let targetValue = e.target.value;
-
-        if(targetName == "phone") {
-            if(targetValue.length <=10) {
-                targetValue = e.target.value.replace(/\D/g, '');
-                this.setState({[targetName]: targetValue });
-            }
+              break;
+            case 'email':
+                errors.email = !emailReg.test(value)
+                ? "Please enter correct email address" : "";
+              break;
+            case 'password':
+                errors.password = !PasswordReg.test(value)
+                ? "Password must contain uppercase, lowercase, specialcharacter and number" : "";
+              break;
+            case 'confirmPassword':
+                errors.confirmPassword = value !== this.state.password
+                ? "Password and confirm password must be same" : "";
+              break;
+            case 'phone':
+                errors.phone = value.length !== 10 
+                ? "Phone number must be 10 digit" : "";
+              break;
+            default: 
+              break;
         }
-        else {
-            this.setState({[targetName]: targetValue });
-        }        
+        // if(name == "phone") {
+        //     if(value.length <=10) {
+        //         value = e.target.value.replace(/\D/g, '');
+        //         this.setState({[name]: value });
+        //     }
+        // }
+        // else {
+        //     this.setState({[targetName]: targetValue });
+        // }  
+        this.setState({errors, [name]: value }, () => console.log(this.state));    
     }
 
     formValidation = () => {
         const { username, email, password, confirmPassword, phone } = this.state;
         let isValid = true;
-        const errors = {};
-        // const emailReg = '/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/';
-         const PasswordReg = RegExp(/^(?=.*\d)(?=.*[!@#$%^&*])(?=.*[a-z])(?=.*[A-Z]).{8,}$/);
-        
+        const errors = {};        
 
         if(!username) {
-            errors["username"] = "Username cannot be empty";
+            errors["username"] = "Please enter your name";
             isValid = false;
-        } else if(username.trim().length < 6 || username.trim().length > 20) {
-            errors["username"] = "Username must be min 6 and max 20";
-            isValid = false;            
-        }
+        } 
 
         if(!email) {
-            errors["email"] = "Email cannot be empty";
-            isValid = false;
-        }
-        else if(!new RegExp(/[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,15}/g).test(email)){
-            errors["email"] = "Please enter correct email address";
+            errors["email"] = "Please enter your E-mail!";
             isValid = false;
         }
         
         if(!password) {
-            errors["password"] = "Password cannot be empty";
-            isValid = false;
-        }
-        else if(!PasswordReg.test(password)){
-            errors["password"] = "Password must contain 1 uppercase, 1 specialcharacter, 1 number and lowercase";
+            errors["password"] = "Please enter your password";
             isValid = false;
         }
 
         if(!confirmPassword) {
-            errors["confirmPassword"] = "Confirm password cannot be empty";
-            isValid = false;
-        }
-        else if(confirmPassword !== password){
-            errors["confirmPassword"] = "Confirm password must be same";
+            errors["confirmPassword"] = "Please confirm your password";
             isValid = false;
         }
 
         if(!phone) {
-            errors["phone"] = "Phone number cannot be empty";
-            isValid = false;
-        }
-        else if(phone.trim().length < 10) {
-            errors["phone"] = "Phone number must be 10 digit";
+            errors["phone"] = "Please enter your phone number";
             isValid = false;
         }
 
@@ -84,8 +102,7 @@ class MainPage extends React.Component {
         return isValid;
     }
 
-    handleSubmit = (e) => {
-        console.log('hi');
+    handleSubmit(e) {
         e.preventDefault();
         const isValid = this.formValidation();
 
@@ -99,8 +116,8 @@ class MainPage extends React.Component {
         const {username, email, password, confirmPassword, phone, errors} = this.state;
         return (
             <div>
-                <h1>React Training</h1>
-                <p>Form</p>
+               
+                <div className="page-title">Form</div>
                 <form onSubmit={this.handleSubmit} className='input-form'>
                 <div className="form-group">
                     <input 
@@ -171,4 +188,4 @@ class MainPage extends React.Component {
 
 }
 
-export default MainPage;
+export default SimpleForm;
